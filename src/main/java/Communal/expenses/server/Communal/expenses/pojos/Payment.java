@@ -2,9 +2,7 @@ package Communal.expenses.server.Communal.expenses.pojos;
 
 import lombok.Data;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +13,15 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable=false)
     private Client client;
+
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
     private List<Expense> expenses;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "property_id", referencedColumnName = "id")
     private Property property;
     private Date period;
 }

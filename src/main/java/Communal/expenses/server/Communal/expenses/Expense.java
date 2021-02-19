@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Data
 @Entity
-//@JsonIgnoreProperties(value = { "payment_id" })
 public class Expense {
 
     @Id
@@ -24,4 +23,7 @@ public class Expense {
     @JsonIdentityReference(alwaysAsId=true)
     @JsonProperty("paymentId")
     private Payment payment;
+
+    public Expense(String key, Integer value, Long paymentId) {
+    }
 }

@@ -3,11 +3,9 @@ package Communal.expenses.server.Communal.expenses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,5 +42,17 @@ public class Controller {
         return new ResponseEntity(expenseMap, HttpStatus.OK);
     }
 
+    @PostMapping("/expenses")
+    public ResponseEntity saveExpenses(@RequestBody Map<String, Integer> theMap, @RequestParam Long paymentId) {
 
+        List<Expense> expenseList = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> pair : theMap.entrySet()) {
+            expenseList.add(new Expense(pair.getKey(), pair.getValue(), paymentId));
+        }
+
+        expenseRepository.saveAll(expenseList);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

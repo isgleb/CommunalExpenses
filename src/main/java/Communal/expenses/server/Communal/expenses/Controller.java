@@ -5,10 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.*;
 
 @RestController
 public class Controller {
@@ -29,45 +27,49 @@ public class Controller {
     @GetMapping("/payments/{id}")
     public ResponseEntity getPayments(@PathVariable Long id) {
 
-        return new ResponseEntity(paymentRepository.findById(id), HttpStatus.OK);
-    }
+        Optional<Payment> payment = paymentRepository.findById(id);
 
+        if (payment.isPresent()) {
+            System.out.println(payment.get().getId());
+            PaymentDto paymentDto = new PaymentDto();
+            paymentDto.setId(payment.get().getId());
+            paymentDto.setClientId(payment.get().getClientId());
+            paymentDto.setOwnerName(payment.get().getOwnerName());
+            paymentDto.setAddress(payment.get().getAddress());
+            paymentDto.setPeriod(payment.get().getPeriod());
 
-    @GetMapping("/expenses")
-    public ResponseEntity getExpenses(@RequestParam Long paymentId) {
-        List<Expense> expenseList = expenseRepository.getByPayment_id(paymentId);
-        Map<String, Integer> expenseMap = new HashMap<>();
-        expenseList.forEach(expense -> expenseMap.put(expense.name, expense.amount));
+            Map<String, Integer> expensesMap = new HashMap<>();
 
-        return new ResponseEntity(expenseMap, HttpStatus.OK);
+            for (Expense expense: payment.get().getExpenses()) {
+                expensesMap.put(expense.getName(), expense.getAmount());
+            }
+
+            paymentDto.setExpenses(expensesMap);
+
+            return new ResponseEntity(paymentDto, HttpStatus.OK);
+        }
+
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/expenses")
-    public ResponseEntity saveExpenses(@RequestBody Map<String, Integer> theMap, @RequestParam Long paymentId) {
+    public ResponseEntity saveExpenses(@RequestBody PaymentDto paymentDto, @RequestParam Long paymentId) {
+
+        Payment payment = new Payment(paymentDto.getId(),
+                paymentDto.getClientId(),
+                paymentDto.getOwnerName(),
+                paymentDto.getAddress(),
+                paymentDto.getPeriod());
 
         List<Expense> expenseList = new ArrayList<>();
 
-        for (Map.Entry<String, Integer> pair : theMap.entrySet()) {
+        for (Map.Entry<String, Integer> pair : paymentDto.getExpenses().entrySet()) {
             expenseList.add(new Expense(pair.getKey(), pair.getValue(), paymentId));
         }
 
+        paymentRepository.save(payment);
         expenseRepository.saveAll(expenseList);
 
         return new ResponseEntity(HttpStatus.OK);
     }
-
-
-//    @PostMapping("/expenses")
-//    public ResponseEntity saveExpenses(@RequestBody Map<String, Integer> theMap, @RequestParam Long paymentId) {
-//
-//        List<Expense> expenseList = new ArrayList<>();
-//
-//        for (Map.Entry<String, Integer> pair : theMap.entrySet()) {
-//            expenseList.add(new Expense(pair.getKey(), pair.getValue(), paymentId));
-//        }
-//
-//        expenseRepository.saveAll(expenseList);
-//
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
 }

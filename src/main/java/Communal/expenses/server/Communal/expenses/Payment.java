@@ -25,4 +25,7 @@ public class Payment {
 
     private String address;
     private Date period;
+
+    public Payment(long id, int clientId, String ownerName, String address, Date period) {
+    }
 }

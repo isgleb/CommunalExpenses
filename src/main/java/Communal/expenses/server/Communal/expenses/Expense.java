@@ -16,8 +16,8 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    String name;
-    int amount;
+    private String name;
+    private int amount;
 
     @ManyToOne
     @JoinColumn(name="payment_id", nullable=false)

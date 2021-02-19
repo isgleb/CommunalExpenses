@@ -1,15 +1,11 @@
-package Communal.expenses.server.Communal.expenses.pojos;
+package Communal.expenses.server.Communal.expenses;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import Communal.expenses.server.Communal.expenses.Expense;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity

@@ -1,4 +1,4 @@
-package Communal.expenses.server.Communal.expenses.Repositories;
+package Communal.expenses.server.Communal.expenses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +14,4 @@ public class PaymentRowDto {
     private String address;
     private Date period;
     private Long amount;
-
-
 }

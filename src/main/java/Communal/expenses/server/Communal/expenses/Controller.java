@@ -55,4 +55,19 @@ public class Controller {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+
+//    @PostMapping("/expenses")
+//    public ResponseEntity saveExpenses(@RequestBody Map<String, Integer> theMap, @RequestParam Long paymentId) {
+//
+//        List<Expense> expenseList = new ArrayList<>();
+//
+//        for (Map.Entry<String, Integer> pair : theMap.entrySet()) {
+//            expenseList.add(new Expense(pair.getKey(), pair.getValue(), paymentId));
+//        }
+//
+//        expenseRepository.saveAll(expenseList);
+//
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
 }

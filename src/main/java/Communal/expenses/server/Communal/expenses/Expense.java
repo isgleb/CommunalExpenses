@@ -2,12 +2,14 @@ package Communal.expenses.server.Communal.expenses;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Expense {
 
     @Id

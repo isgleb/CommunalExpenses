@@ -20,7 +20,7 @@ public class Payment {
     private String ownerName;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "payment")
-    @JsonIgnore
+//    @JsonIgnore
     private List<Expense> expenses;
 
     private String address;

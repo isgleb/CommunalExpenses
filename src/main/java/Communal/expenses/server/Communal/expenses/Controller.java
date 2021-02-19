@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 public class Controller {
 
@@ -33,8 +37,11 @@ public class Controller {
 
     @GetMapping("/expenses")
     public ResponseEntity getExpenses(@RequestParam Long paymentId) {
+        List<Expense> expenseList = expenseRepository.getByPayment_id(paymentId);
+        Map<String, Integer> expenseMap = new HashMap<>();
+        expenseList.forEach(expense -> expenseMap.put(expense.name, expense.amount));
 
-        return new ResponseEntity(expenseRepository.getByPayment_id(paymentId), HttpStatus.OK);
+        return new ResponseEntity(expenseMap, HttpStatus.OK);
     }
 
 

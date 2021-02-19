@@ -16,7 +16,7 @@ public class Payment {
     private long id;
     private String clientName;
 
-    @OneToMany(mappedBy = "payment")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "payment")
     private List<Expense> expenses;
 
     private String address;

@@ -8,7 +8,7 @@ import java.util.List;
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     @Query(value = "SELECT new Communal.expenses.server.Communal.expenses.PaymentRowDto" +
-            "(p.id, p.clientName, p.address, p.period, SUM(e.amount) AS amount) FROM Payment p " +
+            "(p.id, p.clientId, p.ownerName, p.address, p.period, SUM(e.amount) AS amount) FROM Payment p " +
             "LEFT JOIN Expense e ON p.id = e.payment " +
             "GROUP BY p.id")
     List<PaymentRowDto> getPaymentRowDtos();

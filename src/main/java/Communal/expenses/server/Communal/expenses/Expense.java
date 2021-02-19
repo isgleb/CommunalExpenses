@@ -1,8 +1,8 @@
 package Communal.expenses.server.Communal.expenses;
 
-//import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
-import net.minidev.json.annotate.JsonIgnore;
+
 
 import javax.persistence.*;
 
@@ -20,6 +20,8 @@ public class Expense {
 
     @ManyToOne
     @JoinColumn(name="payment_id", nullable=false)
-    @JsonIgnore
+    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
+    @JsonProperty("paymentId")
     private Payment payment;
 }

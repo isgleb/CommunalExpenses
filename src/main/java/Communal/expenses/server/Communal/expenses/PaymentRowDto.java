@@ -10,6 +10,7 @@ import java.util.Date;
 public class PaymentRowDto {
 
     private Long id;
+    private int clientId;
     private String name;
     private String address;
     private Date period;

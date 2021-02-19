@@ -1,6 +1,10 @@
 package Communal.expenses.server.Communal.expenses.pojos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,16 +18,11 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    private String clientName;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id", nullable=false)
-    private Client client;
+    @OneToMany(mappedBy = "payment")
+    private List<Expense> expenses;
 
-    @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
-    private Set<Expense> expenses;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "property_id", referencedColumnName = "id")
-    private Property property;
+    private String address;
     private Date period;
 }

@@ -4,6 +4,7 @@ import Communal.expenses.server.Communal.expenses.pojos.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@RepositoryRestResource(path = "payments")
+//excerptProjection = ExpenseProjection.class
+@RepositoryRestResource(path = "payments", excerptProjection = PaymentProjection.class)
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 }

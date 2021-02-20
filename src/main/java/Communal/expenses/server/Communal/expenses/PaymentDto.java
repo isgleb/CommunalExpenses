@@ -19,8 +19,8 @@ public class PaymentDto {
     private int clientId;
     private String ownerName;
     private String address;
-    private Date period;
-    private Map<String, Integer> expenses;
+//    private Date period;
+    private List<ExpensesDto> expenses;
 
     public PaymentDto(long id, int clientId, String ownerName, String address, Date period) {
     }

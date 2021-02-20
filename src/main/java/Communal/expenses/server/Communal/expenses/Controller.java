@@ -14,8 +14,8 @@ public class Controller {
     @Autowired
     PaymentRepository paymentRepository;
 
-    @Autowired
-    ExpenseRepository expenseRepository;
+//    @Autowired
+//    ExpenseRepository expenseRepository;
 
     @GetMapping("/payments-row-dtos")
     public ResponseEntity getPaymentRows() {
@@ -35,23 +35,38 @@ public class Controller {
 
 //new
     @PostMapping("/payments")
-    public ResponseEntity saveExpenses(@RequestBody Payment payment, @RequestParam Long paymentId) {
+    public ResponseEntity saveExpenses(@RequestBody PaymentDto payment) {
 
-//        Payment payment = new Payment(paymentDto.getId(),
-//                paymentDto.getClientId(),
-//                paymentDto.getOwnerName(),
-//                paymentDto.getAddress(),
-//                paymentDto.getPeriod());
-//
-//        List<Expense> expenseList = new ArrayList<>();
-//
-//        for (Map.Entry<String, Integer> pair : paymentDto.getExpenses().entrySet()) {
-//            expenseList.add(new Expense(pair.getKey(), pair.getValue(), paymentId));
-//        }
-
-        paymentRepository.save(payment);
-//        expenseRepository.saveAll(expenseList);
+        System.out.println(payment);
+//        paymentRepository.save(payment);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 }
+
+//{"id":1,"clientId":23,
+// "ownerName":"Victor",
+// "address":"Arbat",
+// "expenses":[
+// {"id":2,
+// "name":"cold water",
+// "amount":1200,
+// "paymentId":1}
+//
+// ,{"id":3,
+// "name":"hot water",
+// "amount":1200,
+// "paymentId":1},
+//
+// {"id":5,"name":"repairment","amount":1200,"paymentId":1},{"id":4,"name":"electricity","amount":1200,"paymentId":1}]}
+
+
+
+
+
+//
+//{"id":1,"clientId":23,
+//        "ownerName":"Victor",
+//        "address":"Arbat",
+//        "period":1613782759801,
+//        "expenses":[{"id":2,"name":"cold water","amount":100000,"paymentId":1},{"id":3,"name":"hot water","amount":100000,"paymentId":1},{"id":5,"name":"repairment","amount":100000,"paymentId":1},{"id":4,"name":"electricity","amount":100000,"paymentId":1}]}

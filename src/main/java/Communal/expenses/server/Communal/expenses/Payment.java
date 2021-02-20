@@ -2,6 +2,7 @@ package Communal.expenses.server.Communal.expenses;
 
 import Communal.expenses.server.Communal.expenses.Expense;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
 
     @Id
@@ -21,12 +23,13 @@ public class Payment {
     private int clientId;
     private String ownerName;
 
+
+    private String address;
+//    private Date period;
+
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "payment")
 //    @JsonIgnore
     private List<Expense> expenses;
-
-    private String address;
-    private Date period;
 
     public Payment(long id, int clientId, String ownerName, String address, Date period) {
     }

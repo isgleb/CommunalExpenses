@@ -1,7 +1,10 @@
 package Communal.expenses.server.Communal.expenses;
 
 import Communal.expenses.server.Communal.expenses.Expense;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +31,6 @@ public class Payment {
 //    private Date period;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "payment")
-//    @JsonIgnore
     private List<Expense> expenses;
 
     public Payment(long id, int clientId, String ownerName, String address, Date period) {

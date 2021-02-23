@@ -35,7 +35,7 @@ public class Controller {
 
 //new
     @PostMapping("/payments")
-    public ResponseEntity saveExpenses(@RequestBody PaymentDto payment) {
+    public ResponseEntity saveExpenses(@RequestBody Payment payment) {
 
         System.out.println(payment);
 //        paymentRepository.save(payment);

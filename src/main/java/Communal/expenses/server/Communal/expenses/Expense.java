@@ -21,9 +21,7 @@ public class Expense {
 
     @ManyToOne
     @JoinColumn(name="payment_id", nullable=false)
-    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-    @JsonIdentityReference(alwaysAsId=true)
-    @JsonProperty("paymentId")
+    @JsonIgnore
     private Payment payment;
 
     public Expense(String key, Integer value, Long paymentId) {

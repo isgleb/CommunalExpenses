@@ -24,6 +24,10 @@ public class Expense {
     @JsonIgnore
     private Payment payment;
 
-    public Expense(String key, Integer value, Long paymentId) {
+    public Expense(String name, Integer amount, Payment payment) {
+
+        this.name = name;
+        this.amount = amount;
+        this.payment = payment;
     }
 }

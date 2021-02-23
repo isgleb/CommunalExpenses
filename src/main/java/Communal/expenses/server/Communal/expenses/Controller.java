@@ -14,8 +14,8 @@ public class Controller {
     @Autowired
     PaymentRepository paymentRepository;
 
-//    @Autowired
-//    ExpenseRepository expenseRepository;
+    @Autowired
+    ExpenseRepository expenseRepository;
 
     @GetMapping("/payments-row-dtos")
     public ResponseEntity getPaymentRows() {
@@ -29,19 +29,56 @@ public class Controller {
 
         Optional<Payment> payment = paymentRepository.findById(id);
 
-        return new ResponseEntity(payment, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(payment, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/payments/{id}")
+    public ResponseEntity deletePayment(@PathVariable Long id) {
+
+        paymentRepository.deleteById(id);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
 //new
     @PostMapping("/payments")
-    public ResponseEntity saveExpenses(@RequestBody Payment payment) {
+    public ResponseEntity savePayment(@RequestBody Payment paymentDto) {
 
-        System.out.println(payment);
-//        paymentRepository.save(payment);
+        Payment payment = new Payment();
+        payment.setAddress(paymentDto.getAddress());
+        payment.setClientId(paymentDto.getClientId());
+        payment.setOwnerName(paymentDto.getOwnerName());
+        paymentRepository.save(payment);
+
+        List<Expense> expenses = new ArrayList<>();
+
+        for (Expense expense : paymentDto.getExpenses()) {
+            Expense aNewExpense = new Expense(expense.getName(), expense.getAmount(), payment);
+            expenses.add(aNewExpense);
+        }
+        expenseRepository.saveAll(expenses);
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+//    @PutMapping("/payments")
+//    public ResponseEntity editPayment(@RequestBody Payment payment) {
+//
+//        System.out.println(payment);
+//
+//        for (Expense expense : payment.getExpenses()) {
+//
+//            expense.
+//        }
+//
+////        paymentRepository.save(payment);
+//
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
+
+
+
 }
 
 //{"id":1,"clientId":23,

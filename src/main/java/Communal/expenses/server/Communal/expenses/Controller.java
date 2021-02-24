@@ -48,6 +48,7 @@ public class Controller {
         payment.setAddress(paymentDto.getAddress());
         payment.setClientId(paymentDto.getClientId());
         payment.setOwnerName(paymentDto.getOwnerName());
+        payment.setPeriod(paymentDto.getPeriod());
         paymentRepository.save(payment);
 
         List<Expense> expenses = new ArrayList<>();
@@ -68,6 +69,7 @@ public class Controller {
         payment.setClientId(paymentDto.getClientId());
         payment.setOwnerName(paymentDto.getOwnerName());
         payment.setAddress(paymentDto.getAddress());
+        payment.setPeriod(paymentDto.getPeriod());
         paymentRepository.save(payment);
 
         List<Expense> expenses = new ArrayList<>();

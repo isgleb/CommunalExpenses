@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class Controller {
@@ -29,45 +26,62 @@ public class Controller {
     @GetMapping("/payments/{id}")
     public ResponseEntity getPayments(@PathVariable Long id) {
 
-        return new ResponseEntity(paymentRepository.findById(id), HttpStatus.OK);
+        Optional<Payment> payment = paymentRepository.findById(id);
+
+        return new ResponseEntity(payment, HttpStatus.OK);
     }
 
+    @DeleteMapping("/payments/{id}")
+    public ResponseEntity deletePayment(@PathVariable Long id) {
 
-    @GetMapping("/expenses")
-    public ResponseEntity getExpenses(@RequestParam Long paymentId) {
-        List<Expense> expenseList = expenseRepository.getByPayment_id(paymentId);
-        Map<String, Integer> expenseMap = new HashMap<>();
-        expenseList.forEach(expense -> expenseMap.put(expense.name, expense.amount));
-
-        return new ResponseEntity(expenseMap, HttpStatus.OK);
-    }
-
-    @PostMapping("/expenses")
-    public ResponseEntity saveExpenses(@RequestBody Map<String, Integer> theMap, @RequestParam Long paymentId) {
-
-        List<Expense> expenseList = new ArrayList<>();
-
-        for (Map.Entry<String, Integer> pair : theMap.entrySet()) {
-            expenseList.add(new Expense(pair.getKey(), pair.getValue(), paymentId));
-        }
-
-        expenseRepository.saveAll(expenseList);
+        paymentRepository.deleteById(id);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
 
-//    @PostMapping("/expenses")
-//    public ResponseEntity saveExpenses(@RequestBody Map<String, Integer> theMap, @RequestParam Long paymentId) {
-//
-//        List<Expense> expenseList = new ArrayList<>();
-//
-//        for (Map.Entry<String, Integer> pair : theMap.entrySet()) {
-//            expenseList.add(new Expense(pair.getKey(), pair.getValue(), paymentId));
-//        }
-//
-//        expenseRepository.saveAll(expenseList);
-//
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
+//new
+    @PostMapping("/payments")
+    public ResponseEntity savePayment(@RequestBody Payment paymentDto) {
+
+        Payment payment = new Payment();
+        payment.setAddress(paymentDto.getAddress());
+        payment.setClientId(paymentDto.getClientId());
+        payment.setOwnerName(paymentDto.getOwnerName());
+        payment.setPeriod(paymentDto.getPeriod());
+        paymentRepository.save(payment);
+
+        List<Expense> expenses = new ArrayList<>();
+
+        for (Expense expense : paymentDto.getExpenses()) {
+            Expense aNewExpense = new Expense(expense.getName(), expense.getAmount(), payment);
+            expenses.add(aNewExpense);
+        }
+        expenseRepository.saveAll(expenses);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping("/payments")
+    public ResponseEntity editPayment(@RequestBody Payment paymentDto) {
+
+        Payment payment = paymentRepository.getOne(paymentDto.getId());
+        payment.setClientId(paymentDto.getClientId());
+        payment.setOwnerName(paymentDto.getOwnerName());
+        payment.setAddress(paymentDto.getAddress());
+        payment.setPeriod(paymentDto.getPeriod());
+        paymentRepository.save(payment);
+
+        List<Expense> expenses = new ArrayList<>();
+
+        for (Expense expense : paymentDto.getExpenses()) {
+            Expense anExpense = expenseRepository.getOne(expense.getId());
+            anExpense.setAmount(expense.getAmount());
+            expenses.add(anExpense);
+        }
+
+        expenseRepository.saveAll(expenses);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

@@ -16,16 +16,18 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    String name;
-    int amount;
+    private String name;
+    private int amount;
 
     @ManyToOne
     @JoinColumn(name="payment_id", nullable=false)
-    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-    @JsonIdentityReference(alwaysAsId=true)
-    @JsonProperty("paymentId")
+    @JsonIgnore
     private Payment payment;
 
-    public Expense(String key, Integer value, Long paymentId) {
+    public Expense(String name, Integer amount, Payment payment) {
+
+        this.name = name;
+        this.amount = amount;
+        this.payment = payment;
     }
 }

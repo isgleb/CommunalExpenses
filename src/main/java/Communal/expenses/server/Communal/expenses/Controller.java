@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 @RestController
@@ -45,8 +44,6 @@ public class Controller {
     @PostMapping("/payments")
     public ResponseEntity savePayment(@RequestBody Payment paymentDto) {
 
-//        System.out.println(paymentDto);
-
         Payment payment = new Payment();
         payment.setAddress(paymentDto.getAddress());
         payment.setClientId(paymentDto.getClientId());
@@ -64,48 +61,25 @@ public class Controller {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-//    @PutMapping("/payments")
-//    public ResponseEntity editPayment(@RequestBody Payment payment) {
-//
-//        System.out.println(payment);
-//
-//        for (Expense expense : payment.getExpenses()) {
-//
-//            expense.
-//        }
-//
-////        paymentRepository.save(payment);
-//
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
+    @PutMapping("/payments")
+    public ResponseEntity editPayment(@RequestBody Payment paymentDto) {
 
+        Payment payment = paymentRepository.getOne(paymentDto.getId());
+        payment.setClientId(paymentDto.getClientId());
+        payment.setOwnerName(paymentDto.getOwnerName());
+        payment.setAddress(paymentDto.getAddress());
+        paymentRepository.save(payment);
 
+        List<Expense> expenses = new ArrayList<>();
 
+        for (Expense expense : paymentDto.getExpenses()) {
+            Expense anExpense = expenseRepository.getOne(expense.getId());
+            anExpense.setAmount(expense.getAmount());
+            expenses.add(anExpense);
+        }
+
+        expenseRepository.saveAll(expenses);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
-
-//{"id":1,"clientId":23,
-// "ownerName":"Victor",
-// "address":"Arbat",
-// "expenses":[
-// {"id":2,
-// "name":"cold water",
-// "amount":1200,
-// "paymentId":1}
-//
-// ,{"id":3,
-// "name":"hot water",
-// "amount":1200,
-// "paymentId":1},
-//
-// {"id":5,"name":"repairment","amount":1200,"paymentId":1},{"id":4,"name":"electricity","amount":1200,"paymentId":1}]}
-
-
-
-
-
-//
-//{"id":1,"clientId":23,
-//        "ownerName":"Victor",
-//        "address":"Arbat",
-//        "period":1613782759801,
-//        "expenses":[{"id":2,"name":"cold water","amount":100000,"paymentId":1},{"id":3,"name":"hot water","amount":100000,"paymentId":1},{"id":5,"name":"repairment","amount":100000,"paymentId":1},{"id":4,"name":"electricity","amount":100000,"paymentId":1}]}

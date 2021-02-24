@@ -40,7 +40,6 @@ public class Controller {
     }
 
 
-//new
     @PostMapping("/payments")
     public ResponseEntity savePayment(@RequestBody Payment paymentDto) {
 

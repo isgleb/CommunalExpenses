@@ -14,6 +14,7 @@ public class PaymentRowDto {
     private int clientId;
     private String name;
     private String address;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     private Date period;
     private Long amount;

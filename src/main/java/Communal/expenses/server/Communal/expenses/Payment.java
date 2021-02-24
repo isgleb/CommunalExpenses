@@ -32,7 +32,4 @@ public class Payment {
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy = "payment")
     private List<Expense> expenses;
-
-//    public Payment(long id, int clientId, String ownerName, String address, Date period) {
-//    }
 }

@@ -45,6 +45,8 @@ public class Controller {
     @PostMapping("/payments")
     public ResponseEntity savePayment(@RequestBody Payment paymentDto) {
 
+//        System.out.println(paymentDto);
+
         Payment payment = new Payment();
         payment.setAddress(paymentDto.getAddress());
         payment.setClientId(paymentDto.getClientId());
